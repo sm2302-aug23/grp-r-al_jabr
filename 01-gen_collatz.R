@@ -4,7 +4,7 @@ library(tibble)
 # Create gen_collatz function --------------------------------------------------
 
 gen_collatz <- function(n) {
-  if (n <= 0) {
+  if (!is.integer(n) || n <= 0) {
     stop("Input must be a positive integer")
   }
   seq <- c(n)
@@ -18,6 +18,7 @@ gen_collatz <- function(n) {
   }
   return(seq)
 }
+
 
 # Create collatz_df tibble -----------------------------------------------------
 
