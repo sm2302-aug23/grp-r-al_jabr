@@ -1,6 +1,7 @@
 library(tidyverse)
 library(tibble)
 
+
 # Create gen_collatz function --------------------------------------------------
 
 gen_collatz <- function(n) {
