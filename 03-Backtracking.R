@@ -75,4 +75,3 @@ print(paste("Most Frequently Occurring Number of Backtracks:", mode_backtrack))
 print(paste("Maximum Value Reached After the First Backtrack:", max_after_backtrack))
 print("Frequency Counts for Even and Odd Backtracking Integers:")
 print(even_odd_backtrack)
-
