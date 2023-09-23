@@ -1,5 +1,4 @@
 library(tidyverse)
-library(purrr)
 
 # Task 3------------------------------------------------------------------------
 
@@ -27,7 +26,7 @@ count_backtrack <- function(seq) {
 }
 
 mode_backtrack <- backtracks_df %>%
-  mutate( backtrack_counts = map_int(seq, count_backtrack)) %>%
+  mutate( backtrack_counts = sapply(seq, count_backtrack)) %>%
   count(backtrack_counts) %>%
   arrange(desc(n)) %>%
   pull(backtrack_counts) %>%
@@ -52,7 +51,7 @@ first_backtrack <- function(seq) {
 }
 
 max_after_backtrack <- backtracks_df %>%
-  mutate(max_after_backtrack = map_int(seq, first_backtrack)) %>%
+  mutate(max_after_backtrack = sapply(seq, first_backtrack)) %>%
   pull(max_after_backtrack)
 
 # 4) Are backtracking sequences more common among even or odd starting integers? 
@@ -62,3 +61,6 @@ even_odd_backtrack <- backtracks_df %>%
   group_by(parity) %>%
   summarise(frequency = n()) %>%
   pull(2)
+
+library(testthat)
+test_dir("tests/testthat")
