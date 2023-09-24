@@ -2,36 +2,7 @@ library(tidyverse)
 
 # Code for Task 6 Creative visualisation ---------------------------------------
 
-# 1) Numerical Progression for each starting integer ---------------------------
-
-collatz_df %>%
-  unnest(seq) %>%
-  group_by(start) %>%
-  mutate(step = row_number()) %>%
-  ggplot(.,
-         aes(x = step,
-             y = seq)) +
-  geom_line()
-
-# Choose starting integer = 27
-
-collatz_df %>%
-  unnest(seq) %>%
-  group_by(start) %>%
-  filter(start %in% 27) %>%
-  mutate(step = row_number()) %>%
-  ggplot(.,
-         aes(x = step,
-             y = seq)) +
-  geom_line(aes(col = "red")) +
-  labs(
-    title = "Collatz Sequence Line Plot",
-    x = "Step",
-    y = "Value"
-  ) +
-  theme_minimal()
-
-# 2) Plot the highest value reached by each starting integer -------------------
+# 1) Plot the highest value reached by each starting integer -------------------
 # y-axis(0,100000)
 
 collatz_df %>%
@@ -47,7 +18,7 @@ collatz_df %>%
              size = 1) +
   labs(
     title = "Collatz Conjecture",
-    subtitle = "Max value reached by each starting integer",
+    subtitle = "Max value reached by each starting integer ",
     x = "Starting Integer",
     y = "Value"
   ) +
@@ -55,3 +26,43 @@ collatz_df %>%
   
   xlim(0, 10000) +
   ylim(0, 100000)
+
+
+# 2) Numerical Progression for each starting integer ---------------------------
+
+# Let's look at the numerical progression of starting integer n = 27
+
+collatz_df %>%
+  unnest(seq) %>%
+  group_by(start) %>%
+  filter(start %in% 27) %>%
+  mutate(step = row_number()) %>%
+  ggplot(.,
+         aes(x = step,
+             y = seq)) +
+  geom_line() +
+  labs(
+    title = "Collatz Sequence Line Plot",
+    x = "Step",
+    y = "Value"
+  ) +
+  theme_minimal()
+
+# Now, for starting integer from 1:100
+
+collatz_df %>%
+  unnest(seq) %>%
+  group_by(start) %>%
+  filter(start %in% 1:100) %>%
+  mutate(step = row_number()) %>%
+  ggplot(.,
+         aes(x = step,
+             y = seq,
+             col = start)) +
+  geom_line() +
+  labs(
+    title = "Collatz Sequence Line Plot",
+    x = "Step",
+    y = "Value"
+  ) +
+  theme_minimal()
