@@ -1,28 +1,22 @@
-Analysis of Collatz Conjecture
-================
+# Analysis of Collatz Conjecture
 
 #### By Al Jabr
 
 ## Project Description
 
-The Collatz Conjecture is a mathematical conjecture concerning a
-sequence defined as follows. Start with any positive integer. Then each
-term is obtained from the previous term according to these rules:
+The Collatz Conjecture is a mathematical conjecture concerning a sequence defined as follows. Start with any positive integer. Then each term is obtained from the previous term according to these rules:
 
-If the previous term is even, the next term is one half of the previous
-term. If the previous term is odd, the next term is 3 times the previous
-term plus 1.
+If the previous term is even, the next term is one half of the previous term. If the previous term is odd, the next term is 3 times the previous term plus 1.
 
-The conjecture is that no matter what value of , the sequence will
-always reach 1.
+The conjecture is that no matter what value of , the sequence will always reach 1.
 
-## Group Member
+## Group Members
 
 | Members  | Student ID |
 |:--------:|:----------:|
-|  Danish  |  20B2049   |
-|  Hafiz   |  20B2049   |
-|   Afif   |  20B2049   |
+|  Danish  |  20B2044   |
+|  Hafiz   |  20B2062   |
+|   Afif   |  20B2097   |
 | Hafeezul |  20B2049   |
 
 # Table of Contents
