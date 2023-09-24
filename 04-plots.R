@@ -1,5 +1,6 @@
 library(tidyverse)
 library(ggplot2)
+library(ggrepel)
 
 # Task 4 -----------------------------------------------------------------------
 
@@ -23,7 +24,8 @@ top_10_length <- sortedlength %>%top_n(10,length)
 scatterplot1 <-
   plot1 + 
   geom_point(data = top_10_length,aes(colour = "Top 10"))+
-  scale_colour_manual(values = c("Top 10" = "blue"))
+  scale_colour_manual(values = c("Top 10" = "blue"))+
+  geom_text_repel(data = top_10_length, aes(label = start))
 
 scatterplot1
 
@@ -41,14 +43,15 @@ plot2<- ggplot( data = collatz_df,
 
 # To find the top 10 starting integers with the highest value
 sortedvalue <- collatz_df %>% arrange(desc(max_val))
-top_10_value <- sortedvalue %>% top_n(10,max_val)
+top_10_value <- sortedvalue[1:10,]
 
 # To highlight the top 10 starting integers 
 scatterplot2 <-
   plot2 + 
   geom_point(data = top_10_value,
              aes(colour = "Top 10"))+
-  scale_colour_manual(values = c("Top 10" = "red"))
+  scale_colour_manual(values = c("Top 10" = "red"))+
+  geom_text_repel( data = top_10_value, aes(label = start))
 
 scatterplot2
 
@@ -63,3 +66,12 @@ ggplot( data = collatz_df,
     x = "Parity",
     y = "Length of Sequence"
   )
+
+#Are there any noticeable differences?
+# Boxplot A: even starting integers
+# Boxplot B: odd starting integers
+
+# Outliers are only present in boxplot B.
+# The median in boxplot B is higher than in boxplot A, which indicates that odd
+  # starting integers result in longer sequences.
+
