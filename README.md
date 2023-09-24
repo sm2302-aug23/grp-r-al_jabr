@@ -16,7 +16,7 @@ term plus 1.
 The conjecture is that no matter what value of , the sequence will
 always reach 1.
 
-## Group Members
+## Group Member
 
 | Members  | Student ID |
 |:--------:|:----------:|
