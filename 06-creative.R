@@ -48,12 +48,12 @@ collatz_df %>%
   ) +
   theme_minimal()
 
-# Now, for starting integer from 1:100
+# Now, for starting integer from 1:50
 
 collatz_df %>%
   unnest(seq) %>%
   group_by(start) %>%
-  filter(start %in% 1:100) %>%
+  filter(start %in% 1:50) %>%
   mutate(step = row_number()) %>%
   ggplot(.,
          aes(x = step,
