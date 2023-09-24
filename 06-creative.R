@@ -24,7 +24,6 @@ collatz_df %>%
     y = "Value"
   ) +
   theme_minimal() + 
-  
   xlim(0, 10000) +
   ylim(0, 100000)
 
@@ -53,7 +52,6 @@ collatz_df %>%
     x = "Steps",
     y = "Value"
   ) +
-  scale_fill_viridis_c() +
   theme_classic()
 
 ggsave("numerical_progression_of_27.png",
@@ -77,6 +75,7 @@ collatz_df %>%
   facet_wrap(start ~ length, scales = "free") +
   labs(
     title = "Collatz Sequence Line Plot",
+    subtitle = "Numerical Progression for each starting integer",
     x = "Steps",
     y = "Value"
   ) +
