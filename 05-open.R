@@ -38,18 +38,6 @@ correlation_start <- collatz_df %>%
 # There is a weak positive relationship between the starting integers and the 
 # length of the sequence
 
-start_length <- collatz_df %>%
-  select(-seq, -parity) %>%
-  ggplot(., aes(x = start,
-                y = length)) +
-  geom_point(color = "skyblue") +
-  geom_smooth(method = "lm",
-              se = FALSE,
-              fullrange = TRUE,
-              color = "red") +
-  labs(x = "Starting integers",
-       y = "Length of the sequence") +
-  theme_minimal()
 
 # The correlation of start and max_val is 0.08813-----------------------------
 
@@ -57,18 +45,6 @@ start_length <- collatz_df %>%
 # which suggests that there is a very weak positive relationship between 
 # the starting integers and maximum value in the sequence
 
-start_max_val <- collatz_df %>%
-  select(-seq, -parity) %>%
-  ggplot(., aes(x = start,
-                y = max_val)) +
-  geom_point(color = "skyblue") +
-  geom_smooth(method = "lm",
-              se = FALSE,
-              fullrange = TRUE,
-              color = "red") +
-  labs(x = "Starting integers",
-       y = "Maximum value") +
-  theme_minimal()
 
 # The correlation of start and even_counts is 0.22123--------------------------
 
@@ -131,8 +107,8 @@ even_odd_counts <- collatz_df %>%
   theme_minimal()
 
 library(ggpubr)
-ggarrange(start_length, start_max_val, start_even_counts, start_odd_counts, even_odd_counts,
-          labels = c("p = 0.20541", "p = 0.08813", "p = 0.22123", "p = 0.17986", "p = 0.99879"),
+ggarrange(start_even_counts, start_odd_counts, even_odd_counts,
+          labels = c("p = 0.22123", "p = 0.17986", "p = 0.99879"),
           hjust = -2,
           font.label = list(size = 9),
-          ncol = 3, nrow = 2)
+          ncol = 2, nrow = 2)
