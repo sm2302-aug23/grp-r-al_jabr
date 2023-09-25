@@ -88,16 +88,13 @@ ggsave("numerical_progression_of_1_to_30.png",
        bg = "white",
        dpi = 300)
 
-# 3) How long are Collatz sequences?
+# 3) How long are Collatz sequences? -------------------------------------------
 
 collatz_df %>%
-  unnest(seq) %>%
-  group_by(start) %>%
-  mutate(steps = row_number()) %>%
   ggplot(.,
          aes(x = start,
-             y = steps)) +
-  geom_hex() +
+             y = length)) +
+  geom_hex(bins = 20) +
   scale_y_continuous(breaks = seq(0, 275, by = 25)) +
   scale_fill_viridis_c() +
   theme_minimal()
