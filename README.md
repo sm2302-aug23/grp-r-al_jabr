@@ -95,6 +95,7 @@ library(tidyverse)
 
 # 1) Filter collatz_df to retain starting integers that exhibit backtracking in their seq
 
+``` r
 has_backtracking <- function(seq) {
   if (length(seq) <= 2) {
     return(FALSE)
@@ -112,6 +113,7 @@ backtracks_df <- collatz_df %>%
 
 # 2) What is the most frequently occurring number of times they go above their starting integer?
 
+``` r
 count_backtrack <- function(seq) {
   sum(seq > seq[1])
 }
@@ -125,6 +127,7 @@ mode_backtrack <- backtracks_df %>%
 
 # 3) What is the maximum value reached after the first backtrack for these sequences? 
 
+``` r
 first_backtrack <- function(seq) {
   start <- seq[1]
   first <- start
@@ -148,6 +151,7 @@ max_after_backtrack <- backtracks_df %>%
 # 4) Are backtracking sequences more common among even or odd starting integers? 
 # Give the frequency counts for even and odd backtracking integers
 
+``` r
 even_odd_backtrack <- backtracks_df %>%
   group_by(parity) %>%
   summarise(frequency = n()) %>%
