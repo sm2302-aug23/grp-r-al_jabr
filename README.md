@@ -10,11 +10,11 @@ The *Collatz Conjecture* is a mathematical hypothesis named after a German Mathe
 
 -   Generate each subsequent term based on the following conditions:
 
-    -   If the previous term is [**even**]{.underline}, the next term is *half of the previous term*.
+    -   If the previous term is **even**, the next term is *half of the previous term*.
 
         -   $n/2$
 
-    -   If the previous term is [**odd**]{.underline}, the next term is obtained by *multiplying the previous term by 3* and then *adding 1*.
+    -   If the previous term is **odd**, the next term is obtained by *multiplying the previous term by 3* and then *adding 1*.
 
         -   $3n+1$
 
@@ -28,7 +28,7 @@ The conjecture assume that irrespective of the initial positive integer chosen, 
 4.  [Open-ended Exploration](#task4)
 5.  [Creative Visualisation Challenge](#task5)
 
-## [Generating the Collatz Conjencture]{.underline}
+## Generating the Collatz Conjencture
 
 Firstly, create `gen_collatz` function that takes a positive integer `n` as input and generates the Collatz sequence until it reaches 1.
 
@@ -93,7 +93,7 @@ collatz_df <- tibble(start,
                      max_val)
 ```
 
-## [Exploratory Data Analysis & Visualizations]{.underline}
+## Exploratory Data Analysis & Visualizations
 
 Using `{tidyverse}` data wrangling techniques, we will analyze the data to provide essential insights into the behavior of the Collatz Conjecture sequences. Then, using `{ggplot2}`, we will create the appropriate graphs that visualize the data wrangling tasks.
 
@@ -146,7 +146,7 @@ max_val_int <- collatz_df %>%
 
 `max_val_int` = 9663
 
-Below is the scatter plot of the highest value reached by each starting integer, with the starting integers in the horizontal axis, and the maximum values in the vertical axis. The top 10 starting integers are highlighted and labeled in [red]{.underline}.
+Below is the scatter plot of the highest value reached by each starting integer, with the starting integers in the horizontal axis, and the maximum values in the vertical axis. The top 10 starting integers are highlighted and labeled in **red**.
 
 ![](./figures/Scatterplot2.png)
 
@@ -224,7 +224,7 @@ ggplot( data = collatz_df,
   )
 ```
 
-## [Investigating backtracking in Sequences]{.underline}
+## Investigating backtracking in Sequences
 
 When a series hits a number that is less than the initial integer but subsequently rises beyond it at least once more before reaching 1, *backtracking* has occurred. Hence, let's investigate them!
 
@@ -303,11 +303,11 @@ even_odd_backtrack <- backtracks_df %>%
 
 `even_odd_backtrack` = **3943** **4286**
 
-Hence, backtracking sequences are [more common]{.underline} in **odd** starting integers compared to **even** starting integers.
+Hence, backtracking sequences are ***more common*** in **odd** starting integers compared to **even** starting integers.
 
 ## [Open-ended Exploration]{.underline}
 
-Investigating the [**correlation**]{.underline} between the **starting integers** and the **number of even and odd numbers** in the sequence
+Investigating the ***correlation*** between the **starting integers** and the **number of even and odd numbers** in the sequence
 
 -   First, we create `odd_counts` and `even_counts`, which are the frequency of of odd and even numbers in the sequence.
 
@@ -348,27 +348,27 @@ even_counts 0.22123190 0.9998222 0.17193671   1.0000000  0.9987938
 odd_counts  0.17985668 0.9995421 0.17025389   0.9987938  1.0000000
 ```
 
--   The correlation coefficient between the **starting integers** and the **number of even numbers** in the sequence is [**0.22123**]{.underline}, which is **low** and **positive**.
+-   The correlation coefficient between the **starting integers** and the **number of even numbers** in the sequence is **0.22123**, which is ***low*** and ***positive***.
 
-    > This indicates that there is a ***weak positive relationship*** between the starting integers in the sequence and the number of even numbers in the sequence.
+    -   This indicates that there is a ***weak positive relationship*** between the starting integers in the sequence and the number of even numbers in the sequence.
 
--   The correlation coefficient between the **starting integers** and the **number of odd numbers** in the sequence is [**0.17986**]{.underline}, which is also **low** and **positive**.
+-   The correlation coefficient between the **starting integers** and the **number of odd numbers** in the sequence is **0.17986**, which is also ***low*** and ***positive***.
 
-    > This shows that there is a ***weak positive relationship*** between the starting integers in the sequence and the number of odd numbers in the sequence.
+    -   This shows that there is a ***weak positive relationship*** between the starting integers in the sequence and the number of odd numbers in the sequence.
 
--   The correlation coefficient between the **number of even** and **odd numbers** in the sequence is [**0.99879**]{.underline}, which is **high (close to 1)** and **positive**.
+-   The correlation coefficient between the **number of even** and **odd numbers** in the sequence is **0.99879**, which is ***high (close to 1)*** and ***positive***.
 
-    > This indicates that there is a ***strong positive relationship*** between the number of even and odd numbers in the sequence.
+    -   This indicates that there is a ***strong positive relationship*** between the number of even and odd numbers in the sequence.
 
 ![](./figures/correlation_start_evenodd.png)
 
--   The **first two plots** represents the [**relationship**]{.underline} between the **starting integer** of the sequence and the **number of even and odd numbers** in the sequence respectively.
+-   The **first two plots** represents the ***relationship*** between the **starting integer** of the sequence and the **number of even and odd numbers** in the sequence respectively.
 
-    > It is ***clear*** here that there are many points that are scattered away from the line, which indicates a ***weak relationship***. The **slope of the line** is ***positive***, so the relationship will be ***positive***.
+    -   It is ***clear*** here that there are many points that are scattered away from the line, which indicates a ***weak relationship***. The **slope of the line** is ***positive***, so the relationship will be ***positive***.
 
--   The **last plot** represents the [**relationship**]{.underline} between the **number of odd** and **even numbers** in the sequence.
+-   The **last plot** represents the ***relationship*** between the **number of odd** and **even numbers** in the sequence.
 
-    > It is ***obvious*** here that there are many points close to the line, which indicates a ***very strong relationship*** and since the slope is **positive**, the relationship will also be **positive**.
+    -   It is ***obvious*** here that there are many points close to the line, which indicates a ***very strong relationship*** and since the slope is ***positive***, the relationship will also be ***positive***.
 
 -   The code below is used for creating a visualization to show whether there is a relationship between two variables.
 
@@ -425,7 +425,7 @@ ggarrange(start_even_counts, start_odd_counts, even_odd_counts,
 
 > `ggarrange()` is used to fit multiple plots in one image. Before using this, it is important to install `ggpubr` first.
 
-## [Creative Visualization Challenge]{.underline}
+## Creative Visualization Challenge
 
 For this section we will look into 3 different visualizations for Collatz Conjecture;
 
