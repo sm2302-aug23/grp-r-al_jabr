@@ -1,29 +1,20 @@
 # Analysis of Collatz Conjecture
 
-#### By Al Jabr
+> by Al Jabr
 
-## Group Members
+## What is *Collatz Conjecture*?
 
-| Members  | Student ID |
-|:--------:|:----------:|
-|  Danish  |  20B2044   |
-|  Hafiz   |  20B2062   |
-|   Afif   |  20B2097   |
-| Hafeezul |  20B2049   |
-
-## What is Collatz Conjecture?
-
-The Collatz Conjecture is a mathematical hypothesis that revolves around a sequence defined by the following rules:
+The *Collatz Conjecture* is a mathematical hypothesis that revolves around a sequence defined by the following rules:
 
 -   Begin with a positive integer (n).
 
 -   Generate each subsequent term based on the following conditions:
 
-    -   If the previous term is **even**, the next term is *half of the previous term*.
+    -   If the previous term is [**even**]{.underline}, the next term is *half of the previous term*.
 
         -   $n/2$
 
-    -   If the previous term is **odd**, the next term is obtained by *multiplying the previous term by 3* and then *adding 1*.
+    -   If the previous term is [**odd**]{.underline}, the next term is obtained by *multiplying the previous term by 3* and then *adding 1*.
 
         -   $3n+1$
 
@@ -32,15 +23,14 @@ The conjecture assume that irrespective of the initial positive integer chosen, 
 # Table of Contents
 
 1.  [Generating the Collatz Conjencture](#task1)
-2.  [Exploratory Data Analysis](#task2)
+2.  [Exploratory Data Analysis & Visualizations](#task2)
 3.  [Investigating backtracking in Sequences](#task3)
-4.  [Visualizations](#task4)
-5.  [Open-ended Exploration](#task5)
-6.  [Creative Visualisation Challenge](#task6)
+4.  [Open-ended Exploration](#task4)
+5.  [Creative Visualisation Challenge](#task5)
 
-## Generating the Collatz Conjencture
+## [Generating the Collatz Conjencture]{.underline}
 
-1)  Create `gen_collatz` function that takes a positive integer `n` as input and generates the Collatz sequence until it reaches 1.
+Firstly, create `gen_collatz` function that takes a positive integer `n` as input and generates the Collatz sequence until it reaches 1.
 
 ``` r
 gen_collatz <- function(n) {
@@ -60,7 +50,17 @@ gen_collatz <- function(n) {
 }
 ```
 
-2)  Create `collatz_df` tibbles that stores the Collatz sequence for starting integers ranging from 1 to 10,000. This tibble contains five columns: `start` (the starting integer value), `seq` (the Collatz sequence saved as a list), `length` (the length of the sequence), `parity` (even or odd starting integer) and `max_val` (the maximum value in the sequence).
+Next, create `collatz_df` tibbles that stores the Collatz sequence for starting integers ranging from 1 to 10,000. This tibble contains five columns:
+
+-   `start` - the starting integer value,
+
+-   `seq` - the Collatz sequence saved as a list,
+
+-   `length` - the length of the sequence,
+
+-   `parity` - even or odd starting integer,
+
+-   `max_val` - the maximum value in the sequence.
 
 ``` r
 start <- 1:10000
@@ -93,133 +93,29 @@ collatz_df <- tibble(start,
                      max_val)
 ```
 
-## Exploratory Data Analysis
+## [Exploratory Data Analysis & Visualizations]{.underline}
 
-Using `{tidyverse}` data wrangling techniques, we will analyze the data to provide essential insights into the behavior of the Collatz Conjecture sequences.
+Using `{tidyverse}` data wrangling techniques, we will analyze the data to provide essential insights into the behavior of the Collatz Conjecture sequences. Then, using `{ggplot2}`, we will create the appropriate graphs that visualize the data wrangling tasks.
 
-1)  Identify top 10 starting integers that produce the longest sequence.
+1)  **Identify top 10 starting integers that produce the longest sequence.**
 
 ``` r
 top10longest <-  collatz_df %>%
   arrange(desc(length)) %>%
-  slice_head(n = 10) %>%
-  pull(start)
+  slice_head(n = 10)
 ```
 
-`top10longest` = 6171 9257 6943 7963 8959 6591 9887 9897 7422 7423
+Below is the scatter plot of the sequence lengths, with the starting integer on the horizontal axis and the length of the sequence on the vertical axis. The top 10 starting integers are highlighted and labeled in [blue]{.underline}.
 
-2)  Identify the starting integer that produces a sequence that reaches the highest maximum value.
-
-``` r
-max_val_int <- collatz_df %>%
-  slice(which.max(max_val)) %>%
-  pull(start)
-```
-
-`max_val_int` = 9663
-
-3)  Calculate the average length and standard deviation of sequences for even starting integers and compare them with those for odd starting integers.
-
-``` r
-even_odd_avg_len <- collatz_df %>%
-  group_by(parity) %>%
-  summarise(mean(length)) %>%
-  pull(2)
-
-even_odd_sd_len <- collatz_df %>%
-  group_by(parity) %>%
-  summarise(sd(length)) %>%
-  pull(2)
-```
-
-`even_odd_avg_len` = 79.5936 92.3396
-
-`even_odd_sd_len` = 45.10308 47.18387
-
-## Investigating backtracking in Sequences
-
-Investigate the idea of "backtracking" in the Collatz sequences in this exercise. When a series hits a number that is less than the initial integer but subsequently rises beyond it at least once more before reaching 1, backtracking has occurred.
-
- 1) Filter collatz_df to retain starting integers that exhibit backtracking in their sequence.
-
-
-``` r
-has_backtracking <- function(seq) {
-  if (length(seq) <= 2) {
-    return(FALSE)
-  }
-  for (i in 2:(length(seq) - 1)) {
-    if (seq[i] < seq[1] && seq[i + 1] > seq[1]) {
-      return(TRUE)
-    }
-  }
-  return(FALSE)  
-}
-
-backtracks_df <- collatz_df %>% 
-  filter(sapply(seq, has_backtracking))
-```
-
-2)  What is the most frequently occurring number of times they go above their starting integer?
-
-``` r
-count_backtrack <- function(seq) {
-  sum(seq > seq[1])
-}
-
-mode_backtrack <- backtracks_df %>%
-  mutate( backtrack_counts = sapply(seq, count_backtrack)) %>%
-  count(backtrack_counts) %>%
-  arrange(desc(n)) %>%
-  pull(backtrack_counts) %>%
-  first()
-```
-
-3)  What is the maximum value reached after the first backtrack for these sequences?
-
-``` r
-first_backtrack <- function(seq) {
-  start <- seq[1]
-  first <- start
-  reached_backtrack <- FALSE
-  
-  for (i in seq) {
-    if (reached_backtrack && i > first) {
-      first <- i
-    }
-    if (i < start) {
-      reached_backtrack <- TRUE
-    }
-  }
-  return(first)
-}
-
-max_after_backtrack <- backtracks_df %>%
-  mutate(max_after_backtrack = sapply(seq, first_backtrack)) %>%
-  pull(max_after_backtrack)
-```
-
-4)  Are backtracking sequences more common among even or odd starting integers? Give the frequency counts for even and odd backtracking integers
-
-``` r
-even_odd_backtrack <- backtracks_df %>%
-  group_by(parity) %>%
-  summarise(frequency = n()) %>%
-  pull(2)
-
-```
-
-## Visualizations
-
-Using `{ggplot2}`, we will create the appropriate graphs that visualise the data wrangling tasks.
-
-1)  A scatterplot of the sequence lengths, with the starting integer on the horizontal axis and the length of the sequence on the vertical axis. The top 10 starting integers are highlighted and labeled in blue.
-
-![](Scatterplot1.png)
+![](./figures/Scatterplot1.png)
 
 Below is the code for the plot:
 
 ``` r
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+
 # Scatterplot of all the sequence lengths
 plot1<- ggplot( data = collatz_df,
                 mapping = aes(x = start,
@@ -232,21 +128,29 @@ plot1<- ggplot( data = collatz_df,
     y = "Length of Sequence"
   )
 
-# To find the top 10 longest starting integers
-sortedlength <- collatz_df %>% arrange(desc(length))
-top_10_length <- sortedlength %>%top_n(10,length)
-
 # To identify the top 10 longest starting integers in the scatterplot
 scatterplot1 <-
   plot1 + 
-  geom_point(data = top_10_length,aes(colour = "Top 10"))+
+  geom_point(data = top10longest,aes(colour = "Top 10"))+
   scale_colour_manual(values = c("Top 10" = "blue"))+
-  geom_text_repel(data = top_10_length, aes(label = start))
+  geom_text_repel(data = top10longest, aes(label = start))
 ```
 
-2)  A scatterplot of the highest value reached by each starting integer, with the starting integers in the horizontal axis, and the maximum values in the vertical axis. The top 10 starting integers are highlighted and labeled in red.
+2)  **Identify the starting integer that produces a sequence that reaches the highest maximum value.**
 
-![](Scatterplot2.png)
+``` r
+max_val_int <- collatz_df %>%
+  slice(which.max(max_val)) %>%
+  pull(start)
+```
+
+`max_val_int` = 9663
+
+Below is the scatter plot of the highest value reached by each starting integer, with the starting integers in the horizontal axis, and the maximum values in the vertical axis. The top 10 starting integers are highlighted and labeled in [red]{.underline}.
+
+![](./figures/Scatterplot2.png)
+
+> We can see that starting integer **9663** from `max_val_int` , indeed has the highest maximum value.
 
 Below is the code for the plot:
 
@@ -276,11 +180,29 @@ scatterplot2 <-
   geom_text_repel( data = top_10_value, aes(label = start))
 ```
 
-3)  Boxplots to compare the distribution of sequence lengths for even and odd starting integers, with the parity on the horizontal axis and the length of sequence on the vertical axis.
+3)  **Calculate the average length and standard deviation of sequences for even starting integers and compare them with those for odd starting integers.**
 
-![](Boxplot1.png)
+``` r
+even_odd_avg_len <- collatz_df %>%
+  group_by(parity) %>%
+  summarise(mean(length)) %>%
+  pull(2)
 
-Lets denote the box plot of even starting integers are "Box plot A", and the box plot of odd starting integers as "Box plot B". As we can see above, there are a few notable differences between box plot A and box plot B, which are as follows:
+even_odd_sd_len <- collatz_df %>%
+  group_by(parity) %>%
+  summarise(sd(length)) %>%
+  pull(2)
+```
+
+`even_odd_avg_len` = **79.5936** **92.3396**
+
+`even_odd_sd_len` = **45.10308** **47.18387**
+
+Shown below are box plots to compare the distribution of sequence lengths for even and odd starting integers, with the parity on the horizontal axis and the length of sequence on the vertical axis.
+
+![](./figures/Boxplot1.png)
+
+Lets denote the box plot of even starting integers are **"Box plot A"**, and the box plot of odd starting integers as **"Box plot B"**. As we can see above, there are a few notable differences between box plot A and box plot B, which are as follows:
 
 1)  Outliers are only present in Box plot B
 
@@ -289,7 +211,7 @@ Lets denote the box plot of even starting integers are "Box plot A", and the box
 Below is the code for the plot:
 
 ``` r
-# Boxplot of distribution of sequence length for even,odd  starting integers
+# Boxplot of distribution of sequence length for even,odd starting integers
 
 ggplot( data = collatz_df,
         mapping = aes( x = parity,
@@ -302,9 +224,90 @@ ggplot( data = collatz_df,
   )
 ```
 
-## Open-ended Exploration
+## [Investigating backtracking in Sequences]{.underline}
 
-Investigating the correlation between the starting integers and the number of even and odd numbers in the sequence
+When a series hits a number that is less than the initial integer but subsequently rises beyond it at least once more before reaching 1, *backtracking* has occurred. Hence, let's investigate them!
+
+1)  **Filter `collatz_df` to retain starting integers that exhibit backtracking in their sequence.**
+
+``` r
+has_backtracking <- function(seq) {
+  if (length(seq) <= 2) {
+    return(FALSE)
+  }
+  for (i in 2:(length(seq) - 1)) {
+    if (seq[i] < seq[1] && seq[i + 1] > seq[1]) {
+      return(TRUE)
+    }
+  }
+  return(FALSE)  
+}
+
+backtracks_df <- collatz_df %>% 
+  filter(sapply(seq, has_backtracking))
+```
+
+> A function `has_backtracking` was created to identify and check if the backtracking has occurred with input `seq`.
+
+2)  **Let's find the most frequently occurring number of times they go above their starting integer.**
+
+``` r
+count_backtrack <- function(seq) {
+  sum(seq > seq[1])
+}
+
+mode_backtrack <- backtracks_df %>%
+  mutate( backtrack_counts = sapply(seq, count_backtrack)) %>%
+  count(backtrack_counts) %>%
+  arrange(desc(n)) %>%
+  pull(backtrack_counts) %>%
+  first()
+```
+
+> Another function `count_backtrack` was introduced to count number of backtracks that has occurred with input `seq`.
+
+3)  **What is the maximum value reached after the first backtrack for these sequences?**
+
+``` r
+first_backtrack <- function(seq) {
+  start <- seq[1]
+  first <- start
+  reached_backtrack <- FALSE
+  
+  for (i in seq) {
+    if (reached_backtrack && i > first) {
+      first <- i
+    }
+    if (i < start) {
+      reached_backtrack <- TRUE
+    }
+  }
+  return(first)
+}
+
+max_after_backtrack <- backtracks_df %>%
+  mutate(max_after_backtrack = sapply(seq, first_backtrack)) %>%
+  pull(max_after_backtrack)
+```
+
+> Lastly, function `first_backtrack` was created to find the first backtrack value for the sequences
+
+4)  **Are backtracking sequences more common among even or odd starting integers? Let's find out!**
+
+``` r
+even_odd_backtrack <- backtracks_df %>%
+  group_by(parity) %>%
+  summarise(frequency = n()) %>%
+  pull(2)
+```
+
+`even_odd_backtrack` = **3943** **4286**
+
+Hence, backtracking sequences are [more common]{.underline} in **odd** starting integers compared to **even** starting integers.
+
+## [Open-ended Exploration]{.underline}
+
+Investigating the [**correlation**]{.underline} between the **starting integers** and the **number of even and odd numbers** in the sequence
 
 -   First, we create `odd_counts` and `even_counts`, which are the frequency of of odd and even numbers in the sequence.
 
@@ -345,13 +348,29 @@ even_counts 0.22123190 0.9998222 0.17193671   1.0000000  0.9987938
 odd_counts  0.17985668 0.9995421 0.17025389   0.9987938  1.0000000
 ```
 
--   The correlation coefficient between the starting integers and the number of even numbers in the sequence is 0.22123, which is low and positive. This indicates that there is a weak positive relationship between the starting integers in the sequence and the number of even numbers in the sequence.
--   The correlation coefficient between the starting integers and the number of odd numbers in the sequence is 0.17986, which is also low and positive. This shows that there is a weak positive relationship between the starting integers in the sequence and the number of odd numbers in the sequence.
--   The correlation coefficient between the number of even and odd numbers in the sequence is 0.99879, which is high (close to 1) and positive. This indicates that there is a strong positive relationship between the number of even and odd numbers in the sequence.
--   The first two plots represents the relationship between the starting integer of the sequence and the number of even and odd numbers in the sequence respectively. It is clear here that there are many points that are scattered away from the line, which indicates a weak relationship. The slope of the line is positive, so the relationship will be positive.
--   The last plots represents the relationship between the number of odd and even numbers in the sequence. It is obvious here that there are many points close to the line, which indicates a very strong relationship and since the slope is positive, the relationship will also be positive. ![](correlation_start_evenodd.png)
+-   The correlation coefficient between the **starting integers** and the **number of even numbers** in the sequence is [**0.22123**]{.underline}, which is **low** and **positive**.
+
+    > This indicates that there is a ***weak positive relationship*** between the starting integers in the sequence and the number of even numbers in the sequence.
+
+-   The correlation coefficient between the **starting integers** and the **number of odd numbers** in the sequence is [**0.17986**]{.underline}, which is also **low** and **positive**.
+
+    > This shows that there is a ***weak positive relationship*** between the starting integers in the sequence and the number of odd numbers in the sequence.
+
+-   The correlation coefficient between the **number of even** and **odd numbers** in the sequence is [**0.99879**]{.underline}, which is **high (close to 1)** and **positive**.
+
+    > This indicates that there is a ***strong positive relationship*** between the number of even and odd numbers in the sequence.
+
+![](./figures/correlation_start_evenodd.png)
+
+-   The **first two plots** represents the [**relationship**]{.underline} between the **starting integer** of the sequence and the **number of even and odd numbers** in the sequence respectively.
+
+    > It is ***clear*** here that there are many points that are scattered away from the line, which indicates a ***weak relationship***. The **slope of the line** is ***positive***, so the relationship will be ***positive***.
+
+-   The **last plot** represents the [**relationship**]{.underline} between the **number of odd** and **even numbers** in the sequence.
+
+    > It is ***obvious*** here that there are many points close to the line, which indicates a ***very strong relationship*** and since the slope is **positive**, the relationship will also be **positive**.
+
 -   The code below is used for creating a visualization to show whether there is a relationship between two variables.
--   `ggarrange()` is used to fit multiple plots in one image. Before using this, it is important to install `ggpubr` first.
 
 ``` r
 start_even_counts <- collatz_df %>%
@@ -404,15 +423,17 @@ ggarrange(start_even_counts, start_odd_counts, even_odd_counts,
           ncol = 2, nrow = 2)
 ```
 
-## Creative Visualization Challenge
+> `ggarrange()` is used to fit multiple plots in one image. Before using this, it is important to install `ggpubr` first.
+
+## [Creative Visualization Challenge]{.underline}
 
 For this section we will look into 3 different visualizations for Collatz Conjecture;
 
-#### 1) Plot the highest value reached by each starting integer
+#### 1) Plotting the highest maximum value reached by each starting integer
 
 ![](./figures/highest_value_reached_by_each_starting_integer.png)
 
-Here is a plot of starting integers up to 10,000, with the largest value reached by each starting integer plotted on the y-axis. The y-axis stopped at 100,000, but not all starting integers can be shown at this scale. For example, when n = 9663, the largest value reached climbs as high as 27 million.
+Here is a plot of starting integers up to 10,000, with the largest maximum value reached by each starting integer plotted on the y-axis. The y-axis stopped at 100,000, but not all starting integers can be shown at this scale. For example, when n = 9663, the largest value reached climbs as high as 27 million.
 
 Below is the code to this plot:
 
@@ -443,7 +464,7 @@ collatz_df %>%
 
 ![](./figures/numerical_progression_of_1_to_30.png)
 
-Here is a plot of the numerical progression of each starting integer from 1 to 30. Interestingly, the starting integer n = 27, goes through 112 steps to finally reach 1.
+Here is a plot of the numerical progression of each starting integer from 1 to 30. Interestingly, the starting integer n = **27**, goes through **112 steps** to finally reach 1.
 
 Below is the code to this plot:
 
@@ -467,13 +488,15 @@ collatz_df %>%
   theme_classic()
 ```
 
-P.S. : You may replace the starting integer filter "1:30" to any numbers you want to look at their numerical progression.
+> You may replace the starting integer filter "1:30" to any numbers you want to look at their numerical progression.
 
 #### 3) Collatz Sequence Hex
 
 ![](./figures/collatz_sequences_hex.png)
 
-Here is a hexagonal plot of the steps of each starting integers from 1 to 10,000. For every hexagon, you can check how many data points there are which leads to the count. As you can see, step numbers from 0-50 are very common, the rest is very uncommon. The number of steps increases very slowly.
+Here is a hexagonal plot of the length of each starting integers from 1 to 10,000. For every hexagon, you can check how many data points there are which leads to the count. As you can see, lengths around 50 and 130 are more common compared to the rest.
+
+> Perhaps, by having more starting integers (i.e 1 to 100,000), a better hexagonal representation can be made to see which lengths are more common.
 
 Below is the code to this plot:
 
@@ -491,17 +514,13 @@ collatz_df %>%
   theme_minimal()
 ```
 
-## Summary
-
-Some text...
-
 ## Contribution declaration
 
 | Tasks  |                   Done by                   |
 |:------:|:-------------------------------------------:|
 | Task 1 |                 @HafizNjame                 |
 | Task 2 |               @HafeezulRaziq                |
-| Task 3 |           @20B2097 @HafeezulRaziq           |
+| Task 3 |                  @20B2097                   |
 | Task 4 |                   @dnshzm                   |
 | Task 5 |                 @HafizNjame                 |
 | Task 6 |               @HafeezulRaziq                |
