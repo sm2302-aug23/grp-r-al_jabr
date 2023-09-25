@@ -301,14 +301,6 @@ ggplot( data = collatz_df,
     x = "Parity",
     y = "Length of Sequence"
   )
-
-#Are there any noticeable differences?
-# Boxplot A: even starting integers
-# Boxplot B: odd starting integers
-
-# Outliers are only present in boxplot B.
-# The median in boxplot B is higher than in boxplot A, which indicates that odd
-  # starting integers result in longer sequences.
 ```
 
 ## Open-ended Exploration
