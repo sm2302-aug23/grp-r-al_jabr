@@ -140,9 +140,6 @@ even_odd_sd_len <- collatz_df %>%
 
 Investigate the idea of "backtracking" in the Collatz sequences in this exercise. When a series hits a number that is less than the initial integer but subsequently rises beyond it at least once more before reaching 1, backtracking has occurred.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
  1) Filter collatz_df to retain starting integers that exhibit backtracking in their sequence.
 
 
