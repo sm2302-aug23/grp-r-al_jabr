@@ -63,6 +63,8 @@ Next, create `collatz_df` tibbles that stores the Collatz sequence for starting 
 -   `max_val` - the maximum value in the sequence.
 
 ``` r
+library(tidyverse)
+
 start <- 1:10000
 
 seq <- list()
@@ -112,7 +114,6 @@ Below is the scatter plot of the sequence lengths, with the starting integer on 
 Below is the code for the plot:
 
 ``` r
-library(tidyverse)
 library(ggplot2)
 library(ggrepel)
 
@@ -502,13 +503,10 @@ Below is the code to this plot:
 
 ``` r
 collatz_df %>%
-  unnest(seq) %>%
-  group_by(start) %>%
-  mutate(steps = row_number()) %>%
   ggplot(.,
          aes(x = start,
-             y = steps)) +
-  geom_hex() +
+             y = length)) +
+  geom_hex(bins = 20) +
   scale_y_continuous(breaks = seq(0, 275, by = 25)) +
   scale_fill_viridis_c() +
   theme_minimal()
