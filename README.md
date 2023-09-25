@@ -209,7 +209,7 @@ For this section we will look into 3 different visualizations for Collatz Conjec
 
 #### 1) Plot the highest value reached by each starting integer
 
-![](highest_value_reached_by_each_starting_integer.png)
+![](./figures/highest_value_reached_by_each_starting_integer.png)
 
 Here is a plot of starting integers up to 10,000, with the largest value reached by each starting integer plotted on the y-axis. The y-axis stopped at 100,000, but not all starting integers can be shown at this scale. For example, when n = 9663, the largest value reached climbs as high as 27 million.
 
@@ -240,7 +240,7 @@ collatz_df %>%
 
 #### 2) Numerical Progression of each starting integer
 
-![](numerical_progression_of_1_to_30.png)
+![](./figures/numerical_progression_of_1_to_30.png)
 
 Here is a plot of the numerical progression of each starting integer from 1 to 30. Interestingly, the starting integer n = 27, goes through 112 steps to finally reach 1.
 
@@ -270,7 +270,7 @@ P.S. : You may replace the starting integer filter "1:30" to any numbers you wan
 
 #### 3) Collatz Sequence Hex
 
-![](collatz_sequences_hex.png)
+![](./figures/collatz_sequences_hex.png)
 
 Here is a hexagonal plot of the steps of each starting integers from 1 to 10,000. For every hexagon, you can check how many data points there are which leads to the count. As you can see, step numbers from 0-50 are very common, the rest is very uncommon. The number of steps increases very slowly.
 
