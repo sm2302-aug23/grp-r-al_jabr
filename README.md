@@ -152,7 +152,7 @@ max_after_backtrack <- backtracks_df %>%
 ```
 
  4) Are backtracking sequences more common among even or odd starting integers? 
-# Give the frequency counts for even and odd backtracking integers
+ Give the frequency counts for even and odd backtracking integers
 
 ``` r
 even_odd_backtrack <- backtracks_df %>%
