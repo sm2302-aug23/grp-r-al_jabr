@@ -305,7 +305,7 @@ even_odd_backtrack <- backtracks_df %>%
 
 Hence, backtracking sequences are ***more common*** in **odd** starting integers compared to **even** starting integers.
 
-## [Open-ended Exploration]{.underline}
+## Open-ended Exploration
 
 Investigating the ***correlation*** between the **starting integers** and the **number of even and odd numbers** in the sequence
 
