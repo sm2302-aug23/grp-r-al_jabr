@@ -28,7 +28,7 @@ The conjecture assume that irrespective of the initial positive integer chosen, 
 4.  [Open-ended Exploration](#open-ended-exploration)
 5.  [Creative Visualisation Challenge](#creative-visualization-challenge)
 
-## Generating the Collatz Conjencture {#generating-the-collatz-conjencture}
+## Generating the Collatz Conjencture 
 
 Firstly, create `gen_collatz` function that takes a positive integer `n` as input and generates the Collatz sequence until it reaches 1.
 
@@ -95,7 +95,7 @@ collatz_df <- tibble(start,
                      max_val)
 ```
 
-## Exploratory Data Analysis & Visualizations {#exploratory-data-analysis--visualizations}
+## Exploratory Data Analysis & Visualizations 
 
 Using `{tidyverse}` data wrangling techniques, we will analyze the data to provide essential insights into the behavior of the Collatz Conjecture sequences. Then, using `{ggplot2}`, we will create the appropriate graphs that visualize the data wrangling tasks.
 
@@ -231,7 +231,7 @@ ggplot( data = collatz_df,
   )
 ```
 
-## Investigating backtracking in Sequences {#investigating-backtracking-in-sequences}
+## Investigating backtracking in Sequences 
 
 When a series hits a number that is less than the initial integer but subsequently rises beyond it at least once more before reaching 1, *backtracking* has occurred. Hence, let's investigate them!
 
@@ -312,7 +312,7 @@ even_odd_backtrack <- backtracks_df %>%
 
 Hence, backtracking sequences are ***more common*** in **odd** starting integers compared to **even** starting integers.
 
-## Open-ended Exploration {#open-ended-exploration}
+## Open-ended Exploration 
 
 Investigating the ***correlation*** between the **starting integers** and the **number of even and odd numbers** in the sequence
 
@@ -432,7 +432,7 @@ ggarrange(start_even_counts, start_odd_counts, even_odd_counts,
 
 > `ggarrange()` is used to fit multiple plots in one image. Before using this, it is important to install `ggpubr` first.
 
-## Creative Visualization Challenge {#creative-visualization-challenge}
+## Creative Visualization Challenge 
 
 For this section we will look into 3 different visualizations for Collatz Conjecture;
 
