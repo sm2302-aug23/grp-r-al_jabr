@@ -207,8 +207,6 @@ even_odd_backtrack <- backtracks_df %>%
   summarise(frequency = n()) %>%
   pull(2)
 
-library(testthat)
-test_dir("tests/testthat")
 ```
 
 ## Visualizations
