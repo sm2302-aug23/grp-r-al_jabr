@@ -110,6 +110,7 @@ has_backtracking <- function(seq) {
 
 backtracks_df <- collatz_df %>% 
   filter(sapply(seq, has_backtracking))
+```
 
 # 2) What is the most frequently occurring number of times they go above their starting integer?
 
@@ -124,6 +125,7 @@ mode_backtrack <- backtracks_df %>%
   arrange(desc(n)) %>%
   pull(backtrack_counts) %>%
   first()
+```
 
 # 3) What is the maximum value reached after the first backtrack for these sequences? 
 
@@ -147,6 +149,7 @@ first_backtrack <- function(seq) {
 max_after_backtrack <- backtracks_df %>%
   mutate(max_after_backtrack = sapply(seq, first_backtrack)) %>%
   pull(max_after_backtrack)
+```
 
 # 4) Are backtracking sequences more common among even or odd starting integers? 
 # Give the frequency counts for even and odd backtracking integers
@@ -159,10 +162,9 @@ even_odd_backtrack <- backtracks_df %>%
 
 library(testthat)
 test_dir("tests/testthat")
-
-
-``` r
 ```
+
+
 
 ## Visualizations
 
