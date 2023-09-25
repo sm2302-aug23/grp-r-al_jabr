@@ -40,9 +40,57 @@ The conjecture assume that irrespective of the initial positive integer chosen, 
 
 ## Generating the Collatz Conjencture
 
-Some text.
+1)  Create `gen_collatz` function that takes a positive integer `n` as input and generates the Collatz sequence until it reaches 1.
 
-``` sample
+``` r
+gen_collatz <- function(n) {
+  if (!is.integer(n) || n <= 0) {
+    stop("Input must be a positive integer")
+  }
+  seq <- c(n)
+  while (n != 1) {
+    if (n %% 2 == 0) {
+      n <- n / 2
+    } else {
+      n <- 3 * n + 1
+    }
+    seq <- c(seq, n)
+  }
+  return(seq)
+}
+```
+
+2)  Create `collatz_df` tibbles that stores the Collatz sequence for starting integers ranging from 1 to 10,000. This tibble contains five columns: `start` (the starting integer value), `seq` (the Collatz sequence saved as a list), `length` (the length of the sequence), `parity` (even or odd starting integer) and `max_val` (the maximum value in the sequence).
+
+``` r
+start <- 1:10000
+
+seq <- list()
+for (i in start) {
+  collatz_seq <- gen_collatz(i)
+  seq[[i]] <- collatz_seq
+}
+
+length <- double()
+for (i in start) {
+  length[i] <- length(gen_collatz(i))
+}
+
+parity <- ifelse(start %% 2 == 0,
+                 "Even",
+                 "Odd")
+
+max_val <- double()
+for (i in start) {
+  max_val[i] <- max(gen_collatz(i))
+}
+
+
+collatz_df <- tibble(start,
+                     seq,
+                     length,
+                     parity,
+                     max_val)
 ```
 
 ## Exploratory Data Analysis
@@ -92,8 +140,7 @@ even_odd_sd_len <- collatz_df %>%
 
 library(tidyverse)
 
-
- 1) Filter collatz_df to retain starting integers that exhibit backtracking in their seq
+1)  Filter collatz_df to retain starting integers that exhibit backtracking in their seq
 
 ``` r
 has_backtracking <- function(seq) {
@@ -112,7 +159,7 @@ backtracks_df <- collatz_df %>%
   filter(sapply(seq, has_backtracking))
 ```
 
- 2) What is the most frequently occurring number of times they go above their starting integer?
+2)  What is the most frequently occurring number of times they go above their starting integer?
 
 ``` r
 count_backtrack <- function(seq) {
@@ -127,7 +174,7 @@ mode_backtrack <- backtracks_df %>%
   first()
 ```
 
- 3) What is the maximum value reached after the first backtrack for these sequences? 
+3)  What is the maximum value reached after the first backtrack for these sequences?
 
 ``` r
 first_backtrack <- function(seq) {
@@ -151,8 +198,7 @@ max_after_backtrack <- backtracks_df %>%
   pull(max_after_backtrack)
 ```
 
- 4) Are backtracking sequences more common among even or odd starting integers? 
- Give the frequency counts for even and odd backtracking integers
+4)  Are backtracking sequences more common among even or odd starting integers? Give the frequency counts for even and odd backtracking integers
 
 ``` r
 even_odd_backtrack <- backtracks_df %>%
@@ -163,8 +209,6 @@ even_odd_backtrack <- backtracks_df %>%
 library(testthat)
 test_dir("tests/testthat")
 ```
-
-
 
 ## Visualizations
 
@@ -269,9 +313,104 @@ ggplot( data = collatz_df,
 
 ## Open-ended Exploration
 
-Some text.
+Investigating the correlation between the starting integers and the number of even and odd numbers in the sequence
+
+-   First, we create `odd_counts` and `even_counts`, which are the frequency of of odd and even numbers in the sequence.
 
 ``` r
+odd_numbers_in_seq <- function(x) {
+  odd_count <- sum(x %% 2 != 0)
+  return(odd_count)
+}
+odd_counts <- double()
+for (i in start) {
+  odd_counts[i] <- odd_numbers_in_seq(collatz_df$seq[[i]])
+}
+
+even_numbers_in_seq <- function(x) {
+  even_count <- sum(x %% 2 == 0)
+  return(even_count)
+}
+even_counts <- double()
+for (i in start) {
+  even_counts[i] <- even_numbers_in_seq(collatz_df$seq[[i]])
+}
+```
+
+-   Then, use the function `cor()` to compute the correlation and store it as `correlation_start`.
+
+``` r
+correlation_start <- collatz_df %>%
+  mutate(even_counts, odd_counts) %>%
+  select(-seq, -parity) %>%
+  cor()
+
+> correlation_start
+                 start    length    max_val even_counts odd_counts
+start       1.00000000 0.2054051 0.08813284   0.2212319  0.1798567
+length      0.20540510 1.0000000 0.17133951   0.9998222  0.9995421
+max_val     0.08813284 0.1713395 1.00000000   0.1719367  0.1702539
+even_counts 0.22123190 0.9998222 0.17193671   1.0000000  0.9987938
+odd_counts  0.17985668 0.9995421 0.17025389   0.9987938  1.0000000
+```
+
+-   The correlation coefficient between the starting integers and the number of even numbers in the sequence is 0.22123, which is low and positive. This indicates that there is a weak positive relationship between the starting integers in the sequence and the number of even numbers in the sequence.
+-   The correlation coefficient between the starting integers and the number of odd numbers in the sequence is 0.17986, which is also low and positive. This shows that there is a weak positive relationship between the starting integers in the sequence and the number of odd numbers in the sequence.
+-   The correlation coefficient between the number of even and odd numbers in the sequence is 0.99879, which is high (close to 1) and positive. This indicates that there is a strong positive relationship between the number of even and odd numbers in the sequence.
+-   The first two plots represents the relationship between the starting integer of the sequence and the number of even and odd numbers in the sequence respectively. It is clear here that there are many points that are scattered away from the line, which indicates a weak relationship. The slope of the line is positive, so the relationship will be positive.
+-   The last plots represents the relationship between the number of odd and even numbers in the sequence. It is obvious here that there are many points close to the line, which indicates a very strong relationship and since the slope is positive, the relationship will also be positive. ![](correlation_start_evenodd.png)
+-   The code below is used for creating a visualization to show whether there is a relationship between two variables.
+-   `ggarrange()` is used to fit multiple plots in one image. Before using this, it is important to install `ggpubr` first.
+
+``` r
+start_even_counts <- collatz_df %>%
+  mutate(even_counts) %>%
+  select(-seq, -parity) %>%
+  ggplot(., aes(x = start,
+                y = even_counts)) +
+  geom_point(color = "skyblue") +
+  geom_smooth(method = "lm",
+              se = FALSE,
+              fullrange = TRUE,
+              color = "red") +
+  labs(x = "Starting integers",
+       y = "Even numbers in the sequence") +
+  theme_minimal()
+  
+start_odd_counts <- collatz_df %>%
+  mutate(odd_counts) %>%
+  select(-seq, -parity) %>%
+  ggplot(., aes(x = start,
+                y = odd_counts)) +
+  geom_point(color = "skyblue") +
+  geom_smooth(method = "lm",
+              se = FALSE,
+              fullrange = TRUE,
+              color = "red") +
+  labs(x = "Starting integers",
+       y = "Odd numbers in the seq") +
+  theme_minimal()
+  
+even_odd_counts <- collatz_df %>%
+  mutate(odd_counts, even_counts) %>%
+  select(-seq, -parity) %>%
+  ggplot(., aes(x = even_counts,
+                y = odd_counts)) +
+  geom_point(color = "skyblue") +
+  geom_smooth(method = "lm",
+              se = FALSE,
+              fullrange = TRUE,
+              color = "red") +
+  labs(x = "Even numbers",
+       y = "Odd numbers") +
+  theme_minimal()
+
+library(ggpubr)
+ggarrange(start_even_counts, start_odd_counts, even_odd_counts,
+          labels = c("p = 0.22123", "p = 0.17986", "p = 0.99879"),
+          hjust = -2,
+          font.label = list(size = 9),
+          ncol = 2, nrow = 2)
 ```
 
 ## Creative Visualization Challenge
