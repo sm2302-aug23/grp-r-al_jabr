@@ -104,10 +104,11 @@ Using `{tidyverse}` data wrangling techniques, we will analyze the data to provi
 ``` r
 top10longest <-  collatz_df %>%
   arrange(desc(length)) %>%
-  slice_head(n = 10)
+  slice_head(n = 10) %>%
+  pull(start)
 ```
 
-Below is the scatter plot of the sequence lengths, with the starting integer on the horizontal axis and the length of the sequence on the vertical axis. The top 10 starting integers are highlighted and labeled in [blue]{.underline}.
+Below is the scatter plot of the sequence lengths, with the starting integer on the horizontal axis and the length of the sequence on the vertical axis. The top 10 starting integers are highlighted and labeled in blue.
 
 ![](./figures/Scatterplot1.png)
 
@@ -128,13 +129,18 @@ plot1<- ggplot( data = collatz_df,
     x = "Starting Integer",
     y = "Length of Sequence"
   )
-
+  
+# To find the top 10 longest starting integers
+top10length <- collatz_df %>%
+    arrange(desc(length)) %>%
+    top_n(10,length)
+    
 # To identify the top 10 longest starting integers in the scatterplot
 scatterplot1 <-
   plot1 + 
-  geom_point(data = top10longest,aes(colour = "Top 10"))+
+  geom_point(data = top10length,aes(colour = "Top 10"))+
   scale_colour_manual(values = c("Top 10" = "blue"))+
-  geom_text_repel(data = top10longest, aes(label = start))
+  geom_text_repel(data = top10length, aes(label = start))
 ```
 
 2)  **Identify the starting integer that produces a sequence that reaches the highest maximum value.**
