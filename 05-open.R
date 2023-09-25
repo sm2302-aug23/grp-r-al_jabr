@@ -1,7 +1,7 @@
 # Code for Task 5 Open-ended exploration
 
 # Investigating the correlation of the starting integers of the sequence
-# with the lengths, maximum value, the number of even and odd numbers in the sequence
+# with the number of even and odd numbers in the sequence
 
 
 # Create odd_counts and even_counts to compute the frequency of each no. in the seq
@@ -24,27 +24,13 @@ for (i in start) {
   even_counts[i] <- even_numbers_in_seq(collatz_df$seq[[i]])
 }
 
-# Compute the correlation of the starting integers with length,
-# max_val, even_counts and odd_counts
+# Compute the correlation of the starting integers even_counts and odd_counts
 
 correlation_start <- collatz_df %>%
   mutate(even_counts, odd_counts) %>%
   select(-seq, -parity) %>%
   cor()
-
-# The correlation of start and length is 0.20541 ---------------------------
-
-# The correlation coefficient is low
-# There is a weak positive relationship between the starting integers and the 
-# length of the sequence
-
-
-# The correlation of start and max_val is 0.08813-----------------------------
-
-# The correlation coefficient is very low
-# which suggests that there is a very weak positive relationship between 
-# the starting integers and maximum value in the sequence
-
+correlation_start
 
 # The correlation of start and even_counts is 0.22123--------------------------
 
@@ -112,3 +98,9 @@ ggarrange(start_even_counts, start_odd_counts, even_odd_counts,
           hjust = -2,
           font.label = list(size = 9),
           ncol = 2, nrow = 2)
+ggsave("correlation_start_evenodd.png",
+       width = 1980,
+       height = 1980,
+       units = "px",
+       bg = "white",
+       dpi = 300)
