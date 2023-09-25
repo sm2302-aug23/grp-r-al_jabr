@@ -61,6 +61,3 @@ even_odd_backtrack <- backtracks_df %>%
   group_by(parity) %>%
   summarise(frequency = n()) %>%
   pull(2)
-
-library(testthat)
-test_dir("tests/testthat")
