@@ -1,10 +1,10 @@
-# Analysis of Collatz Conjecture
+![](./figures/readmebanner.png)
 
-> by Al Jabr
+# Analysis of Collatz Conjecture
 
 ## What is *Collatz Conjecture*?
 
-The *Collatz Conjecture* is a mathematical hypothesis that revolves around a sequence defined by the following rules:
+The *Collatz Conjecture* is a mathematical hypothesis named after a German Mathematician, **Lothar Collatz**, who may have come up with it in 1930s. This hypothesis revolves around a sequence defined by the following rules:
 
 -   Begin with a positive integer (n).
 
